@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Application Submitted";
+}
+@model Mission06.Models.ApplicationResponse
+
+@if (Model.Rating == "R")
+{
+    <h1>Yikes, you shouldn't watch @Model.Title, it's rated R... </h1>
+}
+
+else
+{
+    <h1> @Model.Title has been entered into the database!</h1>
+}
+
