@@ -30,7 +30,7 @@ namespace Mission06.Controllers
         {
             ViewBag.Categories = daContext.Categories.ToList();
 
-            return View();
+            return View("EnterMovie", new ApplicationResponse());
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace Mission06.Controllers
 
             return View(applicatons);
         }
-
+        [HttpGet]
         public IActionResult Edit (int id)
         {
 

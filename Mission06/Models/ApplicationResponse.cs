@@ -11,11 +11,11 @@ namespace Mission06.Models
         [Key]
         [Required]
         public int applicationID { get; set; }
-        [Required]
 
         //foreign key
-        public int CategoryID { get; set; }
         [Required(ErrorMessage = "Please select a Category")]
+        public int CategoryID { get; set; }
+
         public Category Category { get; set; }
         
 
