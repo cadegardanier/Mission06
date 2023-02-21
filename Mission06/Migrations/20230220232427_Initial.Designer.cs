@@ -8,7 +8,7 @@ using Mission06.Models;
 namespace Mission06.Migrations
 {
     [DbContext(typeof(MovieApplicationContext))]
-    [Migration("20230213230942_Initial")]
+    [Migration("20230220232427_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace Mission06.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +53,15 @@ namespace Mission06.Migrations
 
                     b.HasKey("applicationID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("responses");
 
                     b.HasData(
                         new
                         {
                             applicationID = 1,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "John McTernan",
                             Edited = false,
                             Lent = "Cade Gardanier",
@@ -72,7 +73,7 @@ namespace Mission06.Migrations
                         new
                         {
                             applicationID = 2,
-                            Category = "Sports",
+                            CategoryID = 2,
                             Director = "Boaz Yakin",
                             Edited = false,
                             Lent = "Cade Gardanier",
@@ -84,7 +85,7 @@ namespace Mission06.Migrations
                         new
                         {
                             applicationID = 3,
-                            Category = "War",
+                            CategoryID = 3,
                             Director = "Steven Spielberg",
                             Edited = true,
                             Lent = "Cade Gardanier",
@@ -93,6 +94,81 @@ namespace Mission06.Migrations
                             Title = "Saving Private Ryan",
                             Year = (short)1998
                         });
+                });
+
+            modelBuilder.Entity("Mission06.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Sports"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "War"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryID = 8,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryID = 9,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryID = 10,
+                            CategoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("Mission06.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("Mission06.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

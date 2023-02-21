@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mission06.Models;
 using System;
@@ -11,14 +12,12 @@ namespace Mission06.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private MovieApplicationContext _blahContext { get; set; }
+        private MovieApplicationContext daContext { get; set; }
 
         //contstructor
-        public HomeController(ILogger<HomeController> logger, MovieApplicationContext someName)
+        public HomeController( MovieApplicationContext someName)
         {
-            _logger = logger;
-            _blahContext = someName;
+            daContext = someName;
         }
 
         public IActionResult Index()
@@ -29,30 +28,76 @@ namespace Mission06.Controllers
         [HttpGet]
         public IActionResult EnterMovie()
         {
+            ViewBag.Categories = daContext.Categories.ToList();
+
             return View();
         }
 
         [HttpPost]
         public IActionResult EnterMovie(ApplicationResponse ar)
         {
-            _blahContext.Add(ar);
-            _blahContext.SaveChanges();
-            return View("Confirmation", ar);
+            if (ModelState.IsValid)
+            {
+                daContext.Add(ar);
+                daContext.SaveChanges();
+                return View("Confirmation", ar);
+            }
+            else //not valid
+            {
+                ViewBag.Categories = daContext.Categories.ToList();
+
+                return View(ar);
+            }
+
         }
 
         public IActionResult MyPodcasts()
         {
             return View();
         }
-        public IActionResult Privacy()
+
+        [HttpGet]
+        public IActionResult MovieList ()
         {
-            return View();
+            var applicatons = daContext.responses.Include(x => x.Category).ToList();
+
+            return View(applicatons);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Edit (int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            ViewBag.Categories = daContext.Categories.ToList();
+
+            var application = daContext.responses.Single(x => x.applicationID == id);
+
+            return View("EnterMovie", application);
+
         }
+
+        [HttpPost]
+        public IActionResult Edit (ApplicationResponse blah)
+        {
+            daContext.Update(blah);
+            daContext.SaveChanges();
+            return RedirectToAction("MovieList");
+        }
+        [HttpGet]
+        public IActionResult Delete (int id)
+        {
+            var application = daContext.responses.Single(x => x.applicationID == id);
+            return View(application);
+
+        }
+        [HttpPost]
+        public IActionResult Delete(ApplicationResponse ar)
+        {
+            daContext.responses.Remove(ar);
+            daContext.SaveChanges();
+            return RedirectToAction("MovieList");
+
+        }
+
+
     }
 }

@@ -12,16 +12,23 @@ namespace Mission06.Models
         [Required]
         public int applicationID { get; set; }
         [Required]
-        public string Category { get; set; }
-        [Required]
+
+        //foreign key
+        public int CategoryID { get; set; }
+        [Required(ErrorMessage = "Please select a Category")]
+        public Category Category { get; set; }
+        
+
+
+        [Required(ErrorMessage = "Please input a Title")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please input a Year")]
 
         public short Year { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please input a Director")]
 
         public string Director { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please input a Rating")]
 
         public string Rating { get; set; }
 
@@ -31,8 +38,6 @@ namespace Mission06.Models
 
         [MaxLength(25)]
         public string Notes { get; set; }
-
-
 
     }
 }

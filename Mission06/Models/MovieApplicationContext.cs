@@ -15,15 +15,31 @@ namespace Mission06.Models
         }
 
         public DbSet<ApplicationResponse> responses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
+        //seed data
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category { CategoryID = 1, CategoryName = "Action/Adventure"},
+                new Category { CategoryID = 2, CategoryName = "Sports"},
+                new Category { CategoryID = 3, CategoryName = "War"},
+                new Category { CategoryID = 4, CategoryName = "Comedy"},
+                new Category { CategoryID = 5, CategoryName = "Drama"},
+                new Category { CategoryID = 6, CategoryName = "Family"},
+                new Category { CategoryID = 7, CategoryName = "Horror/Suspense"},
+                new Category { CategoryID = 8, CategoryName = "Miscellaneous"},
+                new Category { CategoryID = 9, CategoryName = "Television"},
+                new Category { CategoryID = 10, CategoryName = "VHS"}
+
+            );
+
             mb.Entity<ApplicationResponse>().HasData
                 (
                     new ApplicationResponse
                     {
                         applicationID = 1,
-                        Category = "Action",
+                        CategoryID = 1,
                         Title = "Die Hard",
                         Year = 1988,
                         Director = "John McTernan",
@@ -35,7 +51,7 @@ namespace Mission06.Models
                     new ApplicationResponse
                     {
                         applicationID = 2,
-                        Category = "Sports",
+                        CategoryID = 2,
                         Title = "Remember The Titans",
                         Year = 2000,
                         Director = "Boaz Yakin",
@@ -47,7 +63,7 @@ namespace Mission06.Models
                     new ApplicationResponse
                     {
                         applicationID = 3,
-                        Category = "War",
+                        CategoryID = 3,
                         Title = "Saving Private Ryan",
                         Year = 1998,
                         Director = "Steven Spielberg",
